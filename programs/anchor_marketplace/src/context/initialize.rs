@@ -1,11 +1,11 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{ Mint, TokenInterface};
 use crate::state::marketplace::Marketplace;
-use crate::error_code;
+use crate::MarketplaceError;
 
 #[derive(Accounts)]
 #[instruction(name: String)]
-pub struct Initialize<'info> {
+    pub struct Initialize<'info> {
     #[account(mut)]
     pub admin: Signer<'info>,
     #[account(
@@ -41,7 +41,7 @@ pub struct Initialize<'info> {
 impl<'info> Initialize<'info> {
     pub fn initialize(&mut self, name: String, fee: u16, bumps: &InitializeBumps) -> Result<()> {
         
-        require!(name.len() > 0 && name.len() < 4+ 32, MarketplaceError::NameTooLong);
+        require!(name.len() > 0 && name.len() < 4+ 32, MarketplaceError:: NameTooLong);
 
         self.marketplace.set_inner(Marketplace {
             admin: self.admin.key(),
